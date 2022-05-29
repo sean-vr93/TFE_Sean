@@ -1,0 +1,18 @@
+<?php
+require_once ("securite.php");
+if (($_SESSION['PROFILE']['ROLE'] != 'admin') or ($_SESSION['PROFILE']['ROLE'] != 'direction')){
+	header("location:accueil.php");
+}
+
+require_once ("connection_bdd.php");
+
+$nom = $_POST['nom'];
+$prenom = $_POST['prenom'];
+$email = $_POST['email'];
+
+$ps60=$pdo->prepare("INSERT INTO educateurs (NOM,PRENOM,EMAIL) VALUES (?,?,?)");
+$params60=array($nom,$prenom,$email);
+$ps60->execute($params60);
+
+header("location:afficher_educateurs.php");
+?>

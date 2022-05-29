@@ -1,0 +1,133 @@
+<?php
+	require_once ("connection_bdd.php");
+	require_once ("securite.php");
+	$req = "SELECT * FROM profs_classes_matieres";
+	$ps = $pdo->prepare($req); //objet PDO et prepare statement
+	$ps->execute();
+	
+	$reqclasses = "SELECT * FROM classes";
+	$psclasses = $pdo->prepare($reqclasses); //objet PDO et prepare statement
+	$psclasses->execute();
+    $reqclasses7 = "SELECT * FROM classes";
+    $psclasses7 = $pdo->prepare($reqclasses7); //objet PDO et prepare statement
+    $psclasses7->execute();
+	$reqprofs7 = "SELECT * FROM profs";
+    $psprofs7 = $pdo->prepare($reqprofs7); //objet PDO et prepare statement
+    $psprofs7->execute();
+	$reqmatieres7 = "SELECT * FROM matieres";
+    $psmatieres7 = $pdo->prepare($reqmatieres7); //objet PDO et prepare statement
+    $psmatieres7->execute();
+
+    $req10 = "SELECT * FROM config_ecole WHERE ID=1";
+    $ps10 = $pdo->prepare($req10); //objet PDO et prepare statement
+    $ps10->execute();
+    $annee=$ps10->fetch();
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="./css/w3.css">
+	<link rel="stylesheet" type="text/css" href="./css/monStyle.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+	<?php require_once("entete_site.php") ?>
+    <?php if (($_SESSION['PROFILE']['ROLE'] == 'admin') or ($_SESSION['PROFILE']['ROLE'] == 'direction')) { ?>
+	<div class="w3-container w3-margin w3-border entete_style">
+		<h3 class="w3-opacity bold_style w3-text-white">ENREGISTREMENT DES PROFS CLASSES MATIERES</h3>
+	</div>
+	<div class="w3-container">
+		<form method="POST" action="./sauvegarde_prof_classe_matiere.php" enctype="multipart/form-data" class="w3-container">
+			<h4 class="w3-text-white">Veuillez remplir les champs suivants :</h4>
+			<input class="w3-input" type="text" name="annee" value="<?php echo($annee['ANNEE_ACTUELLE'])?>">
+			<label class="w3-text-white">ANNEE DU PROF</label>
+			<p>
+			<select class="w3-select w3-center" name="prof" type="int">
+				<?php while ($prof=$psprofs7->fetch()) { ?>
+					<?php if ($prof['ID'] != 1 ) { ?>
+					<option value="<?php echo($prof['ID']) ?>"><?php echo($prof['NOM']) ?> <?php echo($prof['PRENOM']) ?></option>
+				<?php } } ?>
+ 			</select>
+			<label class="w3-text-white">PROFESSEUR</label>
+			<p>
+			<select class="w3-select w3-center" name="classe" type="int">
+				<?php while ($classe=$psclasses7->fetch()) { ?>
+					<?php if ($classe['ID'] != 1 ) { ?>
+					<option value="<?php echo($classe['ID']) ?>"><?php echo($classe['CLASSE']) ?></option>
+				<?php } } ?>
+ 			</select>
+			<label class="w3-text-white">CLASSE</label>
+			<p>
+			<select class="w3-select w3-center" name="matiere" type="int">
+				<?php while ($matiere=$psmatieres7->fetch()) { ?>
+					<?php if ($matiere['ID'] != 1 ) { ?>
+					<option value="<?php echo($matiere['ID']) ?>"><?php echo($matiere['MATIERE']) ?></option>
+				<?php } } ?>
+ 			</select>
+			<label class="w3-text-white">MATIERE</label>
+			<p>
+            <button class="w3-btn w3-dark-grey" type="submit">Enregistrer</button>
+            </div>
+		</form> 
+	</div>
+	<?php } ?>
+    
+    <div class="w3-container w3-margin w3-border entete_style">
+	<h3 class="w3-opacity bold_style w3-text-white">LISTE DES PROFS RELATIONNES</h3>
+	</div>
+	
+	<div class="w3-container">
+	<table class="w3-table-all w3-hoverable">
+		<thead>
+			<tr class="w3-grey">
+				<th class="w3-center">ID</th><th class="w3-center">ANNEE</th><th class="w3-center">PROF</th><th class="w3-center">MATIERE</th><th class="w3-center">CLASSE</th>
+				<?php if ($_SESSION['PROFILE']['ROLE']=='admin'){ ?>
+				<th colspan="2" class="w3-center">ADMINISTRATION</th>
+				<?php } ?>
+			</tr>
+		</thead>
+		<tbody>
+		<?php while ($etudiant=$ps->fetch()) { ?>
+            <tr>
+				<td class="w3-center"><?php echo($etudiant['ID']) ?></td>
+
+				<td class="w3-center"><?php echo($etudiant['ANNEE']) ?></td>
+				
+				<?php $reqpro= "SELECT * FROM profs";
+	            $pspro = $pdo->prepare($reqpro); //objet PDO et prepare statement
+	            $pspro->execute(); ?>
+                <?php while ($proff=$pspro->fetch()) { ?>
+                <?php if ($etudiant['PROF'] == $proff['ID']) { ?>
+                <td class="w3-center"><?php echo($proff['NOM']) ?> <?php echo($proff['PRENOM']) ?></td>
+                <?php } } ?>
+				                
+				<?php $reqmat = "SELECT * FROM matieres";
+	            $psmat = $pdo->prepare($reqmat); //objet PDO et prepare statement
+	            $psmat->execute(); ?>
+                <?php while ($mat=$psmat->fetch()) { ?>
+                <?php if ($etudiant['MATIERE'] == $mat['ID']) { ?>
+                <td class="w3-center"><?php echo($mat['MATIERE']) ?></td>
+                <?php } } ?>
+
+				<?php $reqclasses = "SELECT * FROM classes";
+	            $psclasses = $pdo->prepare($reqclasses); //objet PDO et prepare statement
+	            $psclasses->execute(); ?>
+                <?php while ($classe=$psclasses->fetch()) { ?>
+                <?php if ($etudiant['CLASSE'] == $classe['ID']) { ?>
+                <td class="w3-center"><?php echo($classe['CLASSE']) ?></td>
+                <?php } } ?>
+		
+				<?php if ($_SESSION['PROFILE']['ROLE']=='admin'){ ?>
+				<td class="w3-center"><a href="modification_prof_classe_matiere.php?id=<?php echo($etudiant['ID'])?>"><i class="fa fa-edit w3-xlarge"></i></a></td>
+				<td class="w3-center"><a onclick="return confirm('Etes-vous sûr de supprimer ce profil');"	href="supprimer_prof_classe_matiere.php?id=<?php echo($etudiant['ID'])?>"><i class="fa fa-trash w3-xlarge"></i></a></td>
+				<?php } ?>
+			</tr>
+		<?php }  ?>
+		</tbody>
+	</table>
+	</div>
+</body>
+</html>
