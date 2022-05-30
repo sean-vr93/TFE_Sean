@@ -11,7 +11,7 @@
 
 ## Technologies utilisées : 
 - [UniServerZ](https://www.uniformserver.com/) (LocalHost du site Web)
-- [HeidiSQL](https://www.heidisql.com/) (Visalisation de la BDD)
+- [HeidiSQL](https://www.heidisql.com/) (Visualisation de la BDD)
 - [Google Chrome](https://www.google.com/chrome/) (Affichage du Site Web)
 - [Visual Studio Code](https://code.visualstudio.com/) (Editeur de texte)
 - [Blender](https://www.blender.org/) (Modelisation 3D)
@@ -20,7 +20,7 @@
 
 ## Description des fonctionnalités de mon projet principal : 
 
-Mon site internet à pour but de faciliter l'utilisation et l'organisation d'une école toute entière. 
+Mon site internet a pour but de faciliter l'utilisation et l'organisation d'une école toute entière. 
 
 Dans mon site nous pouvons actuellement :
 
@@ -36,7 +36,7 @@ Dans mon site nous pouvons actuellement :
 - Administration des comptes utilisateurs ainsi que leurs profils respectifs
 
 Dans le futur nous pourrons/aurons :
-- Gérer les notes des élèves ainsi que leurs retards, leurs absences, etc.
+- Gérer les notes des élèves ainsi que leurs retards, absences, etc.
 - Gérer les horaires des classes
 - Envoyer des notifications par email
 - Une meilleure interface visuelle (lol)
