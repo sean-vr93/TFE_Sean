@@ -1,5 +1,6 @@
 # Rapport TFE
 
+![Logo école](GrandLogoICM_01-291x300.png)
 ### Date : 30-05-2021
 ### | Nom : Vergauwen | Prenom : Sean | Classe : 6TT |
 
